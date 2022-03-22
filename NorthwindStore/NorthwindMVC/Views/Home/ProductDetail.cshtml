@@ -1,0 +1,20 @@
+@model NorthwindDatabase.Product
+@{
+    ViewData["Title"] = "Product Details - " + Model.ProductName;
+}
+<h2>Product Details</h2>
+<hr />
+<div>
+    <dl class="row">
+        <dt class="col-sm-3">Product ID</dt>
+        <dd class="col-sm-9">@Model.ProductId</dd>
+        <dt class="col-sm-3">Product name</dt>
+        <dd class="col-sm-9">@Model.ProductName</dd>
+        <dt class="col-sm-3">Category ID</dt>
+        <dd class="col-sm-9">@Model.CategoryId</dd>
+        <dt class="col-sm-3">Unit Price</dt>
+        <dd class="col-sm-9">@Model.UnitPrice.Value.ToString("C")</dd>
+        <dt class="col-sm-3">Units In Stock</dt>
+        <dd class="col-sm-9">@Model.UnitsInStock</dd>
+    </dl>
+</div>
