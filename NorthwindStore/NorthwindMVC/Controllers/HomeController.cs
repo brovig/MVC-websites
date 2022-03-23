@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NorthwindDatabase;
 using NorthwindMVC.Models;
 
@@ -41,6 +42,24 @@ public class HomeController : Controller
             return NotFound($"ProductID {id} not found.");
         }
 
+        return View(model);
+    }
+
+    public IActionResult ProductsThatCostMoreThan(decimal? price)
+    {
+        if (!price.HasValue)
+        {
+            return BadRequest("You must pass a product price in the query string, for example, /Home/ProductsThatCostMoreThan?price=50");
+        }
+
+        IEnumerable<Product> model = db.Products.Include(p => p.Category).Include(p => p.Supplier).Where(p => p.UnitPrice > price);
+
+        if (!model.Any())
+        {
+            return NotFound($"No products cost more than {price:C}.");
+        }
+
+        ViewData["MaxPrice"] = price.Value.ToString("C");
         return View(model);
     }
 
