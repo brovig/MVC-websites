@@ -17,25 +17,25 @@ public class HomeController : Controller
         db = injectedContext;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         HomeIndexViewModel model = new
         (
             VisitorCount: (new Random()).Next(1, 1001),
-            Categories: db.Categories.ToList(),
-            Products: db.Products.ToList()
+            Categories: await db.Categories.ToListAsync(),
+            Products: await db.Products.ToListAsync()
         );
         return View(model);
     }
 
-    public IActionResult ProductDetail(int? id)
+    public async Task<IActionResult> ProductDetail(int? id)
     {
         if (!id.HasValue)
         {
             return BadRequest("You must pass a product ID in the route, for example, /Home/ProductDetail/27");
         }
 
-        Product? model = db.Products.SingleOrDefault(p => p.ProductId == id);
+        Product? model = await db.Products.SingleOrDefaultAsync(p => p.ProductId == id);
         
         if (model == null)
         {
