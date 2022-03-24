@@ -45,14 +45,32 @@ public class HomeController : Controller
         return View(model);
     }
 
-    public IActionResult ProductsThatCostMoreThan(decimal? price)
+    public async Task<IActionResult> Category(int? id)
+    {
+        if (!id.HasValue)
+        {
+            return BadRequest("You must pass a category ID in the route, for example, /Home/Category/1");
+        }
+
+        IEnumerable<Product> model = await db.Products.Include(p => p.Supplier).Where(p => p.CategoryId == id).ToListAsync();
+
+        if (model == null)
+        {
+            return NotFound($"CategoryID {id} not found.");
+        }
+
+        ViewData["CategoryName"] = db.Categories.SingleOrDefault(c => c.CategoryId == id).CategoryName.ToString();
+        return View(model);
+    }
+
+    public async Task<IActionResult> ProductsThatCostMoreThan(decimal? price)
     {
         if (!price.HasValue)
         {
             return BadRequest("You must pass a product price in the query string, for example, /Home/ProductsThatCostMoreThan?price=50");
         }
 
-        IEnumerable<Product> model = db.Products.Include(p => p.Category).Include(p => p.Supplier).Where(p => p.UnitPrice > price);
+        IEnumerable<Product> model = await db.Products.Include(p => p.Category).Include(p => p.Supplier).Where(p => p.UnitPrice > price).ToListAsync();
 
         if (!model.Any())
         {
