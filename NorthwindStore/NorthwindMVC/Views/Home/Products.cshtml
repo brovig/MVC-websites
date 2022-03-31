@@ -1,0 +1,32 @@
+@using NorthwindDatabase
+@model IEnumerable<Product>
+@{
+    string title = "Products";
+    ViewData["Title"] = title;
+}
+<h2>@title</h2>
+</hr>
+<div>
+    <div id="product-columns">
+        <ul>
+          @foreach (Product p in @Model)
+          {
+            <li>
+              <a asp-controller="Home" asp-action="ProductDetail" asp-route-id="@p.ProductId">
+                @p.ProductName costs @(p.UnitPrice is null ? "zero" : p.UnitPrice.Value.ToString("C"))
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+      </br>
+      <h3>Query products by price</h3>
+        <form class="mb-3 row" asp-action="ProductsThatCostMoreThan" method="Get">
+        <div class="col-auto">
+            <input class="form-control" name="price" placeholder="Enter a product price" />
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-3">Submit</button>
+        </div>
+        </form>
+</div>

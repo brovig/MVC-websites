@@ -23,8 +23,32 @@ public class HomeController : Controller
         (
             VisitorCount: (new Random()).Next(1, 1001),
             Categories: await db.Categories.ToListAsync(),
-            Products: await db.Products.ToListAsync()
+            Products: await db.Products.Where(p => p.UnitsInStock < 5 && p.UnitsInStock > 0).ToListAsync()
         );
+        return View(model);
+    }
+
+    public async Task<IActionResult> Products()
+    {
+        IEnumerable<Product> model = await db.Products.ToListAsync();
+
+        if (model == null)
+        {
+            return NotFound("No products in stock");
+        }
+
+        return View(model);
+    }
+
+    public async Task<IActionResult> Categories()
+    {
+        IEnumerable<Category> model = await db.Categories.ToListAsync();
+
+        if (model == null)
+        {
+            return NotFound("Hm, there should have been some categories here, but there aren't any");
+        }
+
         return View(model);
     }
 

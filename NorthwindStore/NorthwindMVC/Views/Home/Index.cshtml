@@ -7,7 +7,7 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">Welcome to Northwind</h1>
 </div>
 @if (Model is not null)
 {
@@ -62,22 +62,13 @@
 }
 <div class="row">
   <div class="col-md-12">
-    <h1>Northwind</h1>
     <p class="lead">
       We have had @Model?.VisitorCount visitors this month.
     </p>
-    <h3>Query products by price</h3>
-    <form class="mb-3 row" asp-action="ProductsThatCostMoreThan" method="Get">
-      <div class="col-auto">
-        <input class="form-control" name="price" placeholder="Enter a product price" />
-      </div>
-      <div class="col-auto">
-        <button type="submit" class="btn btn-primary mb-3">Submit</button>
-      </div>
-    </form>
+    
     @if (Model is not null)
     {
-      <h2>Products</h2>
+      <h2>Last items in stock</h2>
       <div id="product-columns">
         <ul>
           @foreach (Product p in @Model.Products)

@@ -20,7 +20,11 @@
         @foreach (Product p in Model)
         {
             <tr>
-                <td>@Html.DisplayFor(modelItem => p.ProductName)</td>
+                <td>
+                    <a asp-controller="Home" asp-action="ProductDetail" asp-route-id="@p.ProductId">
+                        @Html.DisplayFor(modelItem => p.ProductName)
+                    </a>
+                </td>
                 <td>@Html.DisplayFor(modelItem => p.Supplier.CompanyName)</td>
                 <td>@Html.DisplayFor(modelItem => p.UnitPrice)</td>
                 <td>@Html.DisplayFor(modelItem => p.UnitsInStock)</td>
